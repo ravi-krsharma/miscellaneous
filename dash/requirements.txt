@@ -1,2 +1,3 @@
 dash
 dash-uploader
+packaging==21.3

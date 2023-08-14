@@ -3,10 +3,13 @@ import uuid
 
 import dash_uploader as du
 import dash
-import dash_html_components as html
-from dash.dependencies import Input, Output, State
+# import dash_html_components as html
+# from dash.dependencies import Input, Output, State
+from dash import dcc, html, Input, Output, State, callback_context, ctx
 
 app = dash.Dash(__name__)
+
+count = 0
 
 UPLOAD_FOLDER_ROOT = r"C:\tmp\Uploads"
 du.configure_upload(app, UPLOAD_FOLDER_ROOT)
@@ -14,9 +17,14 @@ du.configure_upload(app, UPLOAD_FOLDER_ROOT)
 def get_upload_component(id):
     return du.Upload(
         id=id,
-        max_file_size=1800,  # 1800 Mb
-        filetypes=['csv', 'zip'],
-        upload_id=uuid.uuid1(),  # Unique session id
+        text="Drag-and-drop file here",
+        text_completed="",
+        cancel_button=True,
+        disabled=False,
+        max_file_size=10000,  # in Mb
+        upload_id="Electromagnetics",  # Unique session id
+        default_style={"minHeight": "None", "lineHeight": "None"},
+        max_files=10,
     )
 
 
@@ -36,7 +44,9 @@ def get_app_layout():
                     'padding': '10px',
                     'display': 'inline-block'
                 }),
+            dcc.Store(id="store"),
         ],
+        
         style={
             'textAlign': 'center',
         },
@@ -52,8 +62,21 @@ app.layout = get_app_layout
     output=Output("callback-output", "children"),
     id="dash-uploader",
 )
-def callback_on_completion(status: du.UploadStatus):
-    return html.Ul([html.Li(str(x)) for x in status.uploaded_files])
+def get_a_list(uploadedFiles):
+    # count +=1
+    global count
+    count+=1
+    print("\nget_a_list", uploadedFiles.uploaded_files)
+    # print("\ncount", count)
+    data = []
+    # if filenames:
+    #     with open("filenames.txt", "a") as f:
+    #         f.write(str(filenames))
+    #     data.append(filenames)
+    # else:
+    #     data = None
+    # return dcc.Store(id={"type": "upload-aedt", "index": "upload"}, data=data)
+    return str(uploadedFiles.uploaded_files)
 
 
 
