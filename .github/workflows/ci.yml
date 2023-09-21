@@ -39,6 +39,7 @@ jobs:
     if: |
       github.event_name == "release"
     name: Release type variables
+    runs-on: ubuntu-latest
     steps: 
       - run: |
           echo ${{github.head_ref}}
