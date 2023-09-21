@@ -1,0 +1,36 @@
+name: test-release
+# on:
+#   branch_protection_rule:
+#     types: [created, deleted]
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+    types: [opened, reopened, synchronize, ready_for_review]
+  release:
+    types: [published]
+  workflow_dispatch: 
+
+
+env:
+  PROJECT_NAME: ${{ github.event.repository.name}}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+
+jobs:
+  
+  print-vars:
+    runs-on: ubuntu-latest
+    name: Check variables
+    steps: 
+      - run: |
+          echo ${{github.head_ref}}
+          echo ${{github.event_name}}
+          echo ${{github.ref_name}}
