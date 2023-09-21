@@ -37,7 +37,7 @@ jobs:
 
   print-release:
     if: |
-      github.event_name == release
+      github.event_name == 'release'
     name: Release type variables
     runs-on: ubuntu-latest
     steps: 
