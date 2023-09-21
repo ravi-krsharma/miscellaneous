@@ -34,3 +34,14 @@ jobs:
           echo ${{github.head_ref}}
           echo ${{github.event_name}}
           echo ${{github.ref_name}}
+
+  print-release:
+    if: |
+      github.event_name == "release"
+    name: Release type variables
+    steps: 
+      - run: |
+          echo ${{github.head_ref}}
+          echo ${{github.event_name}}
+          echo ${{github.ref_name}}
+    
